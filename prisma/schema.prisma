@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  ID        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  tickets   Ticket[]
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Concert {
+  ID          String   @id @default(uuid())
+  name        String
+  artistName  String
+  venue       String
+  concertDate DateTime
+  ticketPrice Decimal
+  tickets     Ticket[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Ticket {
+  ID           String   @id @default(uuid())
+  concertID    String
+  concert      Concert  @relation(fields: [concertID], references: [ID])
+  customerID   String
+  customer     User     @relation(fields: [customerID], references: [ID])
+  purchaseDate DateTime
+  orderID      String
+  order        Order    @relation(fields: [orderID], references: [ID])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+}
+
+model Order {
+  ID          String   @id @default(uuid())
+  customerID  String
+  customer    User     @relation(fields: [customerID], references: [ID])
+  tickets     Ticket[]
+  orderDate   DateTime
+  totalAmount Decimal
+  quantity    Int
+  totalPrice  Decimal
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
