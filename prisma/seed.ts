@@ -22,7 +22,7 @@ async function main() {
       artistName: faker.person.fullName(),
       venue: faker.location.streetAddress({ useFullAddress: true }),
       concertDate: faker.date.future(),
-      ticketPrice: faker.finance.amount(50, 300),
+      ticketPrice: parseFloat(faker.finance.amount({ min: 50, max: 300 })),
       availableTickets: faker.number.int({ min: 100, max: 300 }),
       imageURL: faker.image.urlLoremFlickr({ category: 'nightlife' }),
     },
@@ -32,7 +32,7 @@ async function main() {
     data: {
       customerID: user.ID,
       orderDate: new Date(),
-      totalPrice: faker.finance.amount(50, 300),
+      totalPrice: parseFloat(faker.finance.amount({ min: 50, max: 300 })),
     },
   });
 

@@ -9,4 +9,12 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('health')
+  healthCheck(): { message: string; status: string } {
+    return {
+      message: 'Welcome to Book Ticket API',
+      status: 'OK',
+    };
+  }
 }

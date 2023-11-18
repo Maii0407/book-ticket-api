@@ -30,8 +30,6 @@ export class ConcertsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ type: ConcertEntity, isArray: true })
   async findAll() {
     const concerts = await this.concertsService.findAll();
@@ -39,8 +37,6 @@ export class ConcertsController {
   }
 
   @Get(':ID')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ type: ConcertEntity })
   async findOne(@Param('ID') ID: string) {
     const concert = await this.concertsService.findOne(ID);

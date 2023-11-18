@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Order } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 
 export class OrderEntity implements Order {
   constructor(partial: Partial<OrderEntity>) {
@@ -17,7 +16,10 @@ export class OrderEntity implements Order {
   orderDate: Date;
 
   @ApiProperty({ required: true })
-  totalPrice: Decimal;
+  totalPrice: number;
+
+  @ApiProperty({ required: true })
+  checkedOut: boolean;
 
   @ApiProperty()
   createdAt: Date;

@@ -27,7 +27,7 @@ model Concert {
   artistName       String
   venue            String
   concertDate      DateTime
-  ticketPrice      Decimal
+  ticketPrice      Float
   availableTickets Int
   imageURL         String
   tickets          Ticket[]
@@ -54,7 +54,8 @@ model Order {
   customer   User     @relation(fields: [customerID], references: [ID])
   tickets    Ticket[]
   orderDate  DateTime
-  totalPrice Decimal
+  totalPrice Float
+  checkedOut Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
 }

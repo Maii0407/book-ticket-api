@@ -1,5 +1,4 @@
 import { Concert } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ConcertEntity implements Concert {
@@ -23,7 +22,7 @@ export class ConcertEntity implements Concert {
   concertDate: Date;
 
   @ApiProperty({ required: true })
-  ticketPrice: Decimal;
+  ticketPrice: number;
 
   @ApiProperty({ required: true })
   availableTickets: number;
