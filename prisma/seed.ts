@@ -30,7 +30,6 @@ async function main() {
     data: {
       customerID: user.ID,
       orderDate: new Date(),
-      quantity: 1,
       totalPrice: faker.finance.amount(50, 300),
     },
   });
