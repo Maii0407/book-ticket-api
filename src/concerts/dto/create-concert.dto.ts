@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsDecimal, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsDate,
+  IsDecimal,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUrl,
+  MinLength,
+} from 'class-validator';
+
 export class CreateConcertDto {
   @IsString()
   @IsNotEmpty()
@@ -28,4 +37,14 @@ export class CreateConcertDto {
   @IsNotEmpty()
   @ApiProperty({ required: true })
   ticketPrice: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  availableTickets: number;
+
+  @IsUrl()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  imageURL: string;
 }

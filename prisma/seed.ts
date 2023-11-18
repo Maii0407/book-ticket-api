@@ -23,6 +23,8 @@ async function main() {
       venue: faker.location.streetAddress({ useFullAddress: true }),
       concertDate: faker.date.future(),
       ticketPrice: faker.finance.amount(50, 300),
+      availableTickets: faker.number.int({ min: 100, max: 300 }),
+      imageURL: faker.image.urlLoremFlickr({ category: 'nightlife' }),
     },
   });
 

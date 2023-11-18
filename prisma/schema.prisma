@@ -22,15 +22,17 @@ model User {
 }
 
 model Concert {
-  ID          String   @id @default(uuid())
-  name        String
-  artistName  String
-  venue       String
-  concertDate DateTime
-  ticketPrice Decimal
-  tickets     Ticket[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  ID               String   @id @default(uuid())
+  name             String
+  artistName       String
+  venue            String
+  concertDate      DateTime
+  ticketPrice      Decimal
+  availableTickets Int
+  imageURL         String
+  tickets          Ticket[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
 }
 
 model Ticket {
