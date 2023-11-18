@@ -55,6 +55,12 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async update(@Param('ID') ID: string, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.userService.findOne(ID);
+
+    if (!user) {
+      throw new NotFoundException(`User with ${ID} does not exist.`);
+    }
+
     return new UserEntity(await this.userService.update(ID, updateUserDto));
   }
 
@@ -63,6 +69,12 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('ID') ID: string) {
+    const user = await this.userService.findOne(ID);
+
+    if (!user) {
+      throw new NotFoundException(`User with ${ID} does not exist.`);
+    }
+
     return new UserEntity(await this.userService.remove(ID));
   }
 }
