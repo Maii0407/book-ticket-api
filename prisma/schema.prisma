@@ -47,14 +47,13 @@ model Ticket {
 }
 
 model Order {
-  ID          String   @id @default(uuid())
-  customerID  String
-  customer    User     @relation(fields: [customerID], references: [ID])
-  tickets     Ticket[]
-  orderDate   DateTime
-  totalAmount Decimal
-  quantity    Int
-  totalPrice  Decimal
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  ID         String   @id @default(uuid())
+  customerID String
+  customer   User     @relation(fields: [customerID], references: [ID])
+  tickets    Ticket[]
+  orderDate  DateTime
+  quantity   Int
+  totalPrice Decimal
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }

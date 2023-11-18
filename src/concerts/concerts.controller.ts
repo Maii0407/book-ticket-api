@@ -22,6 +22,8 @@ export class ConcertsController {
   constructor(private readonly concertsService: ConcertsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ type: ConcertEntity })
   async create(@Body() createConcertDto: CreateConcertDto) {
     return new ConcertEntity(await this.concertsService.create(createConcertDto));

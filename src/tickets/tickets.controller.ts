@@ -1,34 +1,82 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  NotFoundException,
+} from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { TicketEntity } from './entities/ticket.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('tickets')
+@ApiTags('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketsService.create(createTicketDto);
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: TicketEntity })
+  async create(@Body() createTicketDto: CreateTicketDto) {
+    return new TicketEntity(await this.ticketsService.create(createTicketDto));
   }
 
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: TicketEntity, isArray: true })
+  async findAll() {
+    const tickets = await this.ticketsService.findAll();
+    return tickets.map((ticket) => new TicketEntity(ticket));
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(+id);
+  @Get(':ID')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: TicketEntity })
+  async findOne(@Param('ID') ID: string) {
+    const ticket = await this.ticketsService.findOne(ID);
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ${ID} does not exits`);
+    }
+
+    return new TicketEntity(ticket);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(+id, updateTicketDto);
+  @Patch(':ID')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: TicketEntity })
+  async update(@Param('ID') ID: string, @Body() updateTicketDto: UpdateTicketDto) {
+    const ticket = await this.ticketsService.findOne(ID);
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ${ID} does not exits`);
+    }
+
+    return new TicketEntity(await this.ticketsService.update(ID, updateTicketDto));
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketsService.remove(+id);
+  @Delete(':ID')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: TicketEntity })
+  async remove(@Param('ID') ID: string) {
+    const ticket = await this.ticketsService.findOne(ID);
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ${ID} does not exits`);
+    }
+
+    return new TicketEntity(await this.ticketsService.remove(ID));
   }
 }
