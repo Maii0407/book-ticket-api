@@ -1,14 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import * as bcrypt from 'bcrypt';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
 
+const roundsOfHashing = 10;
+
 async function main() {
+  const seededPassword = faker.internet.password();
   const user = await prisma.user.create({
     data: {
-      username: faker.person.fullName(),
-      password: faker.internet.password(),
+      username: faker.internet.userName(),
+      password: await bcrypt.hash(seededPassword, roundsOfHashing),
     },
   });
 
@@ -25,6 +29,7 @@ async function main() {
   console.log({
     user,
     concert,
+    seededPassword,
   });
 }
 

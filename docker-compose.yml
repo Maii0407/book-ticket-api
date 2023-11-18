@@ -7,7 +7,7 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     ports:
-      - '${DOCKER_DATABASE_PORT}:5880'
+      - '5407:5432'
     environment:
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password
@@ -15,7 +15,7 @@ services:
       TZ: 'GMT+8'
       PGTZ: 'GMT+8'
     networks:
-      -  book_ticket_network
+      - book_ticket_network
 
 networks:
   book_ticket_network:
