@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,7 +8,27 @@ import { SessionRequest } from 'src/interface/request.interface';
 export class TicketsService {
   constructor(private prisma: PrismaService) {}
 
-  create(req: SessionRequest, createTicketDto: CreateTicketDto) {
+  async create(req: SessionRequest, createTicketDto: CreateTicketDto) {
+    const { concertID } = createTicketDto;
+    const concert = await this.prisma.concert.findUnique({
+      where: { ID: concertID },
+    });
+
+    if (!concert) {
+      throw new NotFoundException(`Concert with ${concertID} does not exits`);
+    }
+
+    if (!concert.availableTickets) {
+      throw new NotFoundException(`Concert with ${concertID} is sold out`);
+    }
+
+    await this.prisma.concert.update({
+      where: { ID: concert.ID },
+      data: {
+        availableTickets: concert.availableTickets - 1,
+      },
+    });
+
     return this.prisma.ticket.create({
       data: {
         purchaseDate: new Date(),
