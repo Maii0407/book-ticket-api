@@ -34,8 +34,8 @@ export class TicketsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: TicketEntity, isArray: true })
-  async findAll() {
-    const tickets = await this.ticketsService.findAll();
+  async findAll(@Request() req) {
+    const tickets = await this.ticketsService.findAll(req);
     return tickets.map((ticket) => new TicketEntity(ticket));
   }
 
