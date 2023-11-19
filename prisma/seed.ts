@@ -28,27 +28,17 @@ async function main() {
     },
   });
 
-  const order = await prisma.order.create({
-    data: {
-      customerID: user.ID,
-      orderDate: new Date(),
-      totalPrice: parseFloat(faker.finance.amount({ min: 50, max: 300 })),
-    },
-  });
-
   const ticket = await prisma.ticket.create({
     data: {
       customerID: user.ID,
       concertID: concert.ID,
       purchaseDate: new Date(),
-      orderID: order.ID,
     },
   });
 
   console.log({
     user,
     concert,
-    order,
     ticket,
     seededPassword,
   });

@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   NotFoundException,
+  Request,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -25,8 +26,8 @@ export class TicketsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: TicketEntity })
-  async create(@Body() createTicketDto: CreateTicketDto) {
-    return new TicketEntity(await this.ticketsService.create(createTicketDto));
+  async create(@Request() req, @Body() createTicketDto: CreateTicketDto) {
+    return new TicketEntity(await this.ticketsService.create(req, createTicketDto));
   }
 
   @Get()

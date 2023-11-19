@@ -7,7 +7,7 @@ import { PrismaClientExceptionFilter } from './prisma-client-exception/prisma-cl
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const whitelistedOrigins = ['http://localhost:4407'];
+  const whitelistedOrigins = ['http://localhost:4407', 'http://localhost:3000'];
 
   app.enableCors({
     origin: (origin, callback) => {

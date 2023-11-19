@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ConcertsModule } from './concerts/concerts.module';
 import { TicketsModule } from './tickets/tickets.module';
-import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { OrdersModule } from './orders/orders.module';
     }),
     ConcertsModule,
     TicketsModule,
-    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

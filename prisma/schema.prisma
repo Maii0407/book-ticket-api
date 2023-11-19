@@ -16,7 +16,6 @@ model User {
   username  String   @unique
   password  String
   tickets   Ticket[]
-  orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
@@ -42,20 +41,6 @@ model Ticket {
   customerID   String
   customer     User     @relation(fields: [customerID], references: [ID])
   purchaseDate DateTime
-  orderID      String
-  order        Order    @relation(fields: [orderID], references: [ID])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
-}
-
-model Order {
-  ID         String   @id @default(uuid())
-  customerID String
-  customer   User     @relation(fields: [customerID], references: [ID])
-  tickets    Ticket[]
-  orderDate  DateTime
-  totalPrice Float
-  checkedOut Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
 }

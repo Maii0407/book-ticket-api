@@ -7,9 +7,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TicketsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createTicketDto: CreateTicketDto) {
+  create(req, createTicketDto: CreateTicketDto) {
     return this.prisma.ticket.create({
-      data: createTicketDto,
+      data: {
+        purchaseDate: new Date(),
+        concertID: createTicketDto.concertID,
+        customerID: req.user.ID,
+      },
     });
   }
 

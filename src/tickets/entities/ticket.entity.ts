@@ -18,9 +18,6 @@ export class TicketEntity implements Ticket {
   @ApiProperty({ required: true })
   purchaseDate: Date;
 
-  @ApiProperty({ required: true })
-  orderID: string;
-
   @ApiProperty()
   createdAt: Date;
 
